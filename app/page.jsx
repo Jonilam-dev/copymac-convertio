@@ -212,37 +212,42 @@ export default function Home() {
                     </span>
                 </div>
 
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    multiple
+                    accept="image/*"
+                    onChange={(e) => {
+                        if (e.target.files && e.target.files.length > 0) {
+                            handleFiles(e.target.files);
+                            e.target.value = ''; // Reset to allow same file again
+                        }
+                    }}
+                    style={{ display: 'none' }}
+                />
+
                 <section
                     className="drop-zone"
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
+                    onClick={() => fileInputRef.current?.click()}
                 >
-                    <input
-                        type="file"
-                        ref={fileInputRef}
-                        multiple
-                        accept="image/*"
-                        onChange={(e) => {
-                            if (e.target.files && e.target.files.length > 0) {
-                                handleFiles(e.target.files);
-                            }
-                        }}
-                        style={{ display: 'none' }}
-                    />
                     <Upload className="mx-auto text-primary mb-4 w-16 h-16 drop-zone-icon" />
                     <h2>Arrastra y suelta tus imágenes aquí</h2>
                     <p>Soporta WEBP, PNG, JPG, GIF, AVIF, TIFF y más</p>
-                    <button
-                        type="button"
-                        className="btn-upload"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            fileInputRef.current?.click();
-                        }}
-                    >
-                        Seleccionar Imágenes
-                    </button>
+                    <div className="upload-btn-wrapper">
+                        <button
+                            type="button"
+                            className="btn-upload"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                fileInputRef.current?.click();
+                            }}
+                        >
+                            Seleccionar Imágenes
+                        </button>
+                    </div>
                 </section>
 
                 <section className={`control-panel ${files.length > 0 ? 'active' : ''}`}>

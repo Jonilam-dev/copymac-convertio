@@ -439,7 +439,7 @@ select:hover {
 
 .btn-download {
     flex: 1;
-    background: linear-gradient(135deg, var(--text-main) 0%, #475569 100%);
+    background: linear-gradient(135deg, var(--success) 0%, var(--success-hover) 100%);
     color: white;
     padding: 0.875rem 1.5rem;
     border-radius: var(--radius-md);
@@ -453,20 +453,22 @@ select:hover {
     gap: 0.75rem;
     text-decoration: none;
     transition: all 0.3s;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 .btn-download:hover:not(.pointer-events-none) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
 }
 
 .btn-download:disabled,
 .btn-download.pointer-events-none {
-    background: linear-gradient(135deg, var(--text-muted) 0%, #94a3b8 100%);
+    background: linear-gradient(135deg, #94a3b8 0%, #cbd5e1 100%);
     cursor: not-allowed;
     opacity: 0.6;
+    box-shadow: none;
 }
+
 
 .btn-remove {
     background: transparent;
