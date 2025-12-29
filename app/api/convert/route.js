@@ -7,6 +7,15 @@ export async function POST(req) {
     try {
         const formData = await req.formData();
         const file = formData.get('file');
+
+        // Check for Blob token
+        if (!process.env.BLOB_READ_WRITE_TOKEN) {
+            return NextResponse.json({
+                error: 'Configuración incompleta.',
+                details: 'Falta configurar Vercel Blob Storage en el panel de Vercel (Pestaña Storage).'
+            }, { status: 500 });
+        }
+
         const formatMime = formData.get('format') || 'image/webp';
         const quality = parseInt(formData.get('quality') || '90');
 

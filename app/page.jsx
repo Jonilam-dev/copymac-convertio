@@ -108,9 +108,8 @@ export default function Home() {
                     body: formData,
                 });
 
-                if (!res.ok) throw new Error('Falló la conversión');
-
                 const data = await res.json();
+                if (!res.ok) throw new Error(data.details || data.error || 'Falló la conversión');
 
                 setFiles(prev => prev.map(f => f.id === fileObj.id ? {
                     ...f,
@@ -121,12 +120,16 @@ export default function Home() {
 
             } catch (err) {
                 console.error(err);
+                showToast(err.message, 'error');
                 setFiles(prev => prev.map(f => f.id === fileObj.id ? { ...f, status: 'error' } : f));
             }
         }
 
         setIsProcessing(false);
-        showToast('Proceso completado', 'success');
+        // Sólo mostrar éxito si no hubo errores totales
+        if (!files.some(f => f.status === 'error')) {
+            showToast('Proceso completado', 'success');
+        }
     };
 
     const openUpscalePreview = async (fileId, scale) => {
@@ -146,30 +149,25 @@ export default function Home() {
             });
 
             if (!res.ok) throw new Error('Falló el upscaling');
-
             const data = await res.json();
+            if (!res.ok) throw new Error(data.details || data.error || 'Falló el upscaling');
 
-            // Get original image dimensions
-            const img = new Image();
-            img.src = fileObj.preview;
-            await new Promise(resolve => { img.onload = resolve; });
-
-            setUpscaleModal({
-                fileId,
-                scale,
+            setUpscaleModal(prev => ({
+                ...prev,
                 isProcessing: false,
                 previewData: {
                     originalUrl: fileObj.preview,
                     upscaledUrl: data.url,
-                    originalSize: { width: img.width, height: img.height },
+                    originalSize: data.originalSize,
                     newSize: data.newSize,
-                    downloadName: data.filename
+                    scale: data.scale,
+                    downloadName: data.filename // Assuming data.filename is still provided by the API
                 }
-            });
+            }));
 
         } catch (err) {
             console.error(err);
-            showToast('Error en la ampliación', 'error');
+            showToast(err.message, 'error');
             setUpscaleModal(null);
         }
     };
