@@ -1,0 +1,30 @@
+{
+  "name": "copymac-convertio",
+  "version": "1.0.0",
+  "description": "Herramienta PRO para convertir imágenes sin límites con soporte de IA",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "keywords": [
+    "image",
+    "converter",
+    "webp",
+    "png",
+    "jpg",
+    "ai-upscaling"
+  ],
+  "author": "copymac",
+  "license": "ISC",
+  "dependencies": {
+    "lucide-react": "^0.562.0",
+    "next": "^16.1.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "sharp": "^0.34.5",
+    "uuid": "^13.0.0"
+  }
+}
