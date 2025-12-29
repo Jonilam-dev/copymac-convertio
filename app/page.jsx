@@ -11,6 +11,7 @@ export default function Home() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [toast, setToast] = useState(null);
     const [upscaleModal, setUpscaleModal] = useState(null); // { fileId, isProcessing, previewData }
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
         // Check system preference or saved theme
@@ -221,15 +222,27 @@ export default function Home() {
                 >
                     <input
                         type="file"
-                        id="fileInput"
+                        ref={fileInputRef}
                         multiple
                         accept="image/*"
-                        onChange={(e) => handleFiles(e.target.files)}
+                        onChange={(e) => {
+                            if (e.target.files && e.target.files.length > 0) {
+                                handleFiles(e.target.files);
+                            }
+                        }}
+                        style={{ display: 'none' }}
                     />
                     <Upload className="mx-auto text-primary mb-4 w-16 h-16 drop-zone-icon" />
                     <h2>Arrastra y suelta tus imágenes aquí</h2>
                     <p>Soporta WEBP, PNG, JPG, GIF, AVIF, TIFF y más</p>
-                    <button className="btn-upload" onClick={() => document.getElementById('fileInput').click()}>
+                    <button
+                        type="button"
+                        className="btn-upload"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            fileInputRef.current?.click();
+                        }}
+                    >
                         Seleccionar Imágenes
                     </button>
                 </section>
